@@ -68,7 +68,16 @@ The helper intentionally diagonalizes the interpolated block itself rather than
 interpolating endpoint eigenvalues, which is only valid when endpoint blocks are
 simultaneously diagonalizable.
 
-This helper does not claim that the v2RDM-CASSCF ``t1.cc``/``t2.cc`` constraint
-operator code directly returns endpoint T1/T2 matrices.  The T1/T2 blocks passed
-to :mod:`lambda_dqgt` must be produced by a validated endpoint construction and
-must use the same orbital basis and spin/symmetry block layout.
+The helper also includes dense spin-orbital constructors for endpoint T1/T2
+matrices following the same antisymmetrized formulas as the v2RDM-CASSCF
+``t1.cc``/``t2.cc`` constraint maps.  Supply the v2RDM 2-RDM and either its
+1-RDM or an electron count for 2-RDM contraction; the Hartree-Fock endpoint is
+constructed from an idempotent Hartree-Fock 1-RDM.  The generated endpoint
+blocks must use the same orbital basis before they are passed into the
+interpolation optimizer.
+
+A runnable H2/STO-3G Psi4/Hilbert example is provided in
+``examples/dqgt1t2_h2_example.py``.  It follows the same pattern as the
+``tests/v2rdm*`` inputs: run SCF, run :class:`hilbert.v2RDMHelper`, collect the
+active-space 1-RDM/2-RDM through the Python API, build T1/T2 endpoint matrices,
+and pass them to the lambda optimizer.

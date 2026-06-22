@@ -54,3 +54,21 @@ Uncomment the ``.. comment`` for some examples.
 .. comment 
 .. comment    - Do not run plugin on benzene dimer.
 
+
+HF/DQG lambda interpolation helper
+==================================
+
+The :mod:`lambda_dqgt` helper provides a lightweight one-dimensional
+post-processing workflow for HF/DQG interpolation studies.  Given T1/T2 block
+matrices constructed from a DQG 2-RDM and from a Hartree-Fock 2-RDM in the same
+orbital basis, it forms each interpolated block as
+``(1 - lambda) * block_dqg + lambda * block_hf`` and finds the minimum-energy
+feasible ``lambda`` by checking the eigenvalues of the interpolated matrices.
+The helper intentionally diagonalizes the interpolated block itself rather than
+interpolating endpoint eigenvalues, which is only valid when endpoint blocks are
+simultaneously diagonalizable.
+
+This helper does not claim that the v2RDM-CASSCF ``t1.cc``/``t2.cc`` constraint
+operator code directly returns endpoint T1/T2 matrices.  The T1/T2 blocks passed
+to :mod:`lambda_dqgt` must be produced by a validated endpoint construction and
+must use the same orbital basis and spin/symmetry block layout.
